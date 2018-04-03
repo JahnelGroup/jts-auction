@@ -1,6 +1,5 @@
 package com.jahnelgroup.auctionapp.auction.bid;
 
-import com.jahnelgroup.auctionapp.auction.AuctionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * REST mappings for the Bid Entity.
  *
- * Create   POST    /bids
+ * Create   POST    /auctions/{auctionId}/bids
  *
- * Read     GET     /bids
- *          GET     /bids/1
+ * Read     GET     /auctions/{auctionId}/bids
+ *          GET     /auctions/{auctionId}/bids/1
  *
- * Update   PUT     /bids/1
+ * Update   PUT     /auctions/{auctionId}/bids/1
  *
- * Delete   DELETE  /bids/1
+ * Delete   DELETE  /auctions/{auctionId}/bids/1
  */
 @RestController
 @AllArgsConstructor

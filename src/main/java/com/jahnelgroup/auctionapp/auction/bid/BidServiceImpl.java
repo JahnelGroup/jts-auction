@@ -1,6 +1,7 @@
 package com.jahnelgroup.auctionapp.auction.bid;
 
 import com.jahnelgroup.auctionapp.auction.Auction;
+import com.jahnelgroup.auctionapp.auction.AuctionNotFoundException;
 import com.jahnelgroup.auctionapp.auction.AuctionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +22,16 @@ public class BidServiceImpl implements BidService {
     @Override
     public Iterable<Bid> findAll(Auction auction) {
         return auctionRepository.findById(auction.getId()).get().getBids();
+    }
+
+    @Override
+    public Iterable<Bid> findAllByAuctionId(Long auctionId) {
+        Optional<Auction> auction = auctionRepository.findById(auctionId);
+        if( auction.isPresent() ){
+            return auction.get().getBids();
+        }else{
+            throw new AuctionNotFoundException();
+        }
     }
 
     @Override

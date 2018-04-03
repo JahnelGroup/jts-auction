@@ -7,7 +7,17 @@ Journey Through Spring
 
 Auction Service 
 ------
-Learning is best accomplished through practice. This application is the primary use-case we follow as we take the Journey Through Spring.
+Learning is best accomplished through practice. This repo is the use-case we follow as we take the Journey Through Spring.
+
+| Branch         | Description                                               |
+| -------------- | --------------------------------------------------------- |
+| master         | Initial starting point.                                   |
+| 1-services     | Basic REST API and service implementations.               |
+| 2-security     | Added Spring Security and Users                           |
+| 3-validations  | Added validations                                         |
+| 4-events       | Added events                                              |
+| X-ui           | Added basic UI                                            |
+| X-websockets   | Added real-time updates with websockets                   |
 
 ### Interfaces
 

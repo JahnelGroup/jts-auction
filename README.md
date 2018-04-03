@@ -34,6 +34,7 @@ public interface AuctionService {
 
 public interface BidService {
     Iterable<Bid> findAll(Auction auction);
+    Iterable<Bid> findAllByAuctionId(Long auctionId);
     Optional<Bid> findById(Auction auction, Long id);
     Bid save(Auction auction, Bid bid);
     Bid update(Auction auction, Bid incoming, Bid current);

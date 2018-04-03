@@ -11,6 +11,8 @@ public interface BidService {
 
     Iterable<Bid> findAll(Auction auction);
 
+    Iterable<Bid> findAllByAuctionId(Long id);
+
     Optional<Bid> findById(Auction auction, Long id);
 
     Bid save(Auction auction, Bid bid);

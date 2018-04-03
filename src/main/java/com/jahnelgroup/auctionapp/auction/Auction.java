@@ -34,32 +34,4 @@ public class Auction {
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids = new ArrayList<>();
 
-    public Optional<Bid> getBidById(Long bidId){
-        return bidId == null ? Optional.empty() : bids.stream().filter(bid -> bid.getId().equals(bidId)).findFirst();
-    }
-
-    /**
-     * Adds a bid to this auction and establishes the bi-directional relationship.
-     *
-     * @param bid
-     * @return
-     */
-    public Auction addBid(Bid bid){
-        bid.setAuction(this);
-        bids.add(bid);
-        return this;
-    }
-
-    /**
-     * Removes a bid to this auction and establishes the bi-directional relationship.
-     *
-     * @param bid
-     * @return
-     */
-    public Auction removeBid(Bid bid){
-        bid.setAuction(null);
-        bids.remove(bid);
-        return this;
-    }
-
 }

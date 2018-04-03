@@ -72,51 +72,20 @@ public class BidIntegrationTests {
                 .andExpect(jsonPath("$.id",     Matchers.is(1)))
                 .andExpect(jsonPath("$.amount",   Matchers.is(100.00)));
 
-        // Submit second bid
-        Bid bid2 = new Bid();
-        bid2.setAmount(new BigDecimal("200.00"));
-        mockMvc.perform(post("/auctions/1/bids")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(bid2)))
-                .andDo(print())
-                .andExpect(status().isCreated()) // 201
-                .andExpect(jsonPath("$.id",     Matchers.is(2)))
-                .andExpect(jsonPath("$.amount",   Matchers.is(200.00)));
+        // Submit second bid for 200.00
+        // TODO: Implement.
 
         // Validate 2 bids exist
-        mockMvc.perform(get("/auctions/1/bids"))
-                .andDo(print())
-                .andExpect(status().isOk()) // 200
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[*].id", Matchers.contains(1, 2)))                // order matters
-                .andExpect(jsonPath("$[*].amount", Matchers.contains(100.00, 200.00)));
+        // TODO: Implement.
 
-        // Update bid 1
-        bid1.setAmount(new BigDecimal("150.00"));
-        mockMvc.perform(put("/auctions/1/bids/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(bid1)))
-                .andDo(print())
-                .andExpect(status().isOk()) // 201
-                .andExpect(jsonPath("$.id",     Matchers.is(1)))
-                .andExpect(jsonPath("$.amount",   Matchers.is(150.00)));
+        // Update bid 1 from 100.00 to 150.00
+        // TODO: Implement.
 
         // Delete bid 2
-        mockMvc.perform(delete("/auctions/1/bids/2"))
-                .andDo(print())
-                .andExpect(status().isNoContent()) // 204
-                .andExpect(content().string(isEmptyOrNullString()));
+        // TODO: Implement.
 
-        // Submit third bid
-        Bid bid3 = new Bid();
-        bid3.setAmount(new BigDecimal("300.00"));
-        mockMvc.perform(post("/auctions/1/bids")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(bid3)))
-                .andDo(print())
-                .andExpect(status().isCreated()) // 201
-                .andExpect(jsonPath("$.id",     Matchers.is(3)))
-                .andExpect(jsonPath("$.amount",   Matchers.is(300.00)));
+        // Submit third bid for 300.00
+        // TODO: Implement.
 
         // Validate bid 1 was updated, bid 2 was deleted, and bid 3 was added
         mockMvc.perform(get("/auctions/1/bids"))

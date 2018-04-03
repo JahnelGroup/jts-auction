@@ -10,6 +10,15 @@ import java.util.Optional;
 
 /**
  * REST mappings for the Auction Aggregate.
+ *
+ * Create   POST    /auctions
+ *
+ * Read     GET     /auctions
+ *          GET     /auctions/1
+ *
+ * Update   PUT     /auctions/1
+ *
+ * Delete   DELETE  /auctions/1
  */
 @RestController
 @AllArgsConstructor
@@ -21,6 +30,8 @@ public class AuctionController {
     /**
      * Find all Auctions.
      *
+     * Read: GET /auctions
+     *
      * @return
      */
     @GetMapping
@@ -28,61 +39,7 @@ public class AuctionController {
         return auctionService.findAll();
     }
 
-    /**
-     * Find an Auction.
-     *
-      * @param auction
-     * @return
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Auction> findById(@PathVariable("id") Optional<Auction> auction){
-        return auction.isPresent() ? new ResponseEntity<>(auction.get(), HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Create an Auction.
-     *
-     * @param auction
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
-        return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
-    }
-
-    /**
-     * Update an Auction.
-     *
-     * @param current
-     * @param incoming
-     * @return
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @Valid @RequestBody Auction incoming){
-        if ( current.isPresent() ){
-            return ResponseEntity.ok(auctionService.update(incoming, current.get()));
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
-     * Delete an Auction.
-     *
-     * @param before
-     * @param id
-     * @return
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before, @PathVariable Long id){
-        if( before.isPresent() ){
-            auctionService.delete(before.get());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    // TODO: Implement the rest.
 
 }
 

@@ -2,12 +2,8 @@ package com.jahnelgroup.auctionapp.auction.bid;
 
 import com.jahnelgroup.auctionapp.auction.Auction;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.internal.util.stereotypes.ThreadSafe;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +12,15 @@ import java.util.Optional;
 
 /**
  * REST mappings for the Bid Entity.
+ *
+ * Create   POST    /auctions/{auctionId}/bids
+ *
+ * Read     GET     /auctions/{auctionId}/bids
+ *          GET     /auctions/{auctionId}/bids/1
+ *
+ * Update   PUT     /auctions/{auctionId}/bids/1
+ *
+ * Delete   DELETE  /auctions/{auctionId}/bids/1
  */
 @RestController
 @AllArgsConstructor
@@ -25,7 +30,24 @@ public class BidController {
     private BidService bidService;
 
     /**
+     * Create a bid.
+     *
+     * POST /auctions/{auctionId}/bids
+     *
+     * @param auction
+     * @param bid
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity<Bid> save(@PathVariable("auctionId") Optional<Auction> auction, @RequestBody Bid bid){
+        return auction.isPresent() ? new ResponseEntity<>(bidService.save(auction.get(), bid), HttpStatus.CREATED)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Find all Bids.
+     *
+     * GET /auctions/{auctionId}/bids
      *
      * @param auction
      * @return
@@ -44,6 +66,8 @@ public class BidController {
     /**
      * Find a Bid.
      *
+     * GET /auctions/{auctionId}/bids/1
+     *
      * @param auction
      * @param bid
      * @return
@@ -58,20 +82,9 @@ public class BidController {
     }
 
     /**
-     * Create a bid.
-     *
-     * @param auction
-     * @param bid
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Bid> save(@PathVariable("auctionId") Optional<Auction> auction, @RequestBody Bid bid){
-        return auction.isPresent() ? new ResponseEntity<>(bidService.save(auction.get(), bid), HttpStatus.CREATED)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    /**
      * Update a bid.
+     *
+     * PUT /auctions/{auctionId}/bids/1
      *
      * @param auction
      * @param current
@@ -90,6 +103,8 @@ public class BidController {
 
     /**
      * Delete a bid.
+     *
+     * DELETE /auctions/{auctionId}/bids/1
      *
      * @param auction
      * @param bid

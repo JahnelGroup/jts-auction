@@ -10,6 +10,15 @@ import java.util.Optional;
 
 /**
  * REST mappings for the Auction Aggregate.
+ *
+ * Create   POST    /auctions
+ *
+ * Read     GET     /auctions
+ *          GET     /auctions/1
+ *
+ * Update   PUT     /auctions/1
+ *
+ * Delete   DELETE  /auctions/1
  */
 @RestController
 @AllArgsConstructor
@@ -19,7 +28,22 @@ public class AuctionController {
     private AuctionService auctionService;
 
     /**
+     * Create an Auction.
+     *
+     * POST /auctions
+     *
+     * @param auction
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
+        return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
+    }
+
+    /**
      * Find all Auctions.
+     *
+     * GET /auctions
      *
      * @return
      */
@@ -31,6 +55,8 @@ public class AuctionController {
     /**
      * Find an Auction.
      *
+     * GET /auctions/1
+     *
       * @param auction
      * @return
      */
@@ -41,18 +67,9 @@ public class AuctionController {
     }
 
     /**
-     * Create an Auction.
-     *
-     * @param auction
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
-        return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
-    }
-
-    /**
      * Update an Auction.
+     *
+     * PUT /auctions/1
      *
      * @param current
      * @param incoming
@@ -69,6 +86,8 @@ public class AuctionController {
 
     /**
      * Delete an Auction.
+     *
+     * DELETE /auctions/1
      *
      * @param before
      * @param id

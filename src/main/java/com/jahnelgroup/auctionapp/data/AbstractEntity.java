@@ -1,13 +1,12 @@
 package com.jahnelgroup.auctionapp.data;
 
 import lombok.Data;
-import lombok.experimental.var;
-import org.springframework.data.annotation.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @MappedSuperclass
@@ -16,26 +15,26 @@ public class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @CreatedBy
     @Column(nullable = false, updatable = false)
-    private String createdBy;
+    protected String createdBy;
 
     @CreatedDate
     @Column(nullable = false, updatable = false, columnDefinition="TIMESTAMP")
-    private ZonedDateTime createdDatetime;
+    protected ZonedDateTime createdDatetime;
 
     @LastModifiedBy
     @Column(nullable = false)
-    private String lastModifiedBy;
+    protected String lastModifiedBy;
 
     @LastModifiedDate
     @Column(nullable = false, columnDefinition="TIMESTAMP")
-    private ZonedDateTime lastModifiedDatetime;
+    protected ZonedDateTime lastModifiedDatetime;
 
     @Version
     @Column(nullable = false)
-    private Long version;
+    protected Long version;
 
 }

@@ -20,10 +20,6 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(exclude = "auction")
 public class Bid extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
     private BigDecimal amount;
 

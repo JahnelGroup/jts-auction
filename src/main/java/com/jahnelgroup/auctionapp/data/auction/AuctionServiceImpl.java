@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.auction;
+package com.jahnelgroup.auctionapp.data.auction;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;

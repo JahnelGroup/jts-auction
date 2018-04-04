@@ -1,6 +1,6 @@
-package com.jahnelgroup.auctionapp.auction;
+package com.jahnelgroup.auctionapp.data.auction;
 
-import com.jahnelgroup.auctionapp.auction.bid.Bid;
+import com.jahnelgroup.auctionapp.data.auction.bid.Bid;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

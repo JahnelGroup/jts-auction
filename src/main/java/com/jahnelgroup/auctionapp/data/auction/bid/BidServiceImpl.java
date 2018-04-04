@@ -1,8 +1,8 @@
-package com.jahnelgroup.auctionapp.auction.bid;
+package com.jahnelgroup.auctionapp.data.auction.bid;
 
-import com.jahnelgroup.auctionapp.auction.Auction;
-import com.jahnelgroup.auctionapp.auction.AuctionNotFoundException;
-import com.jahnelgroup.auctionapp.auction.AuctionRepository;
+import com.jahnelgroup.auctionapp.data.auction.Auction;
+import com.jahnelgroup.auctionapp.data.auction.AuctionNotFoundException;
+import com.jahnelgroup.auctionapp.data.auction.AuctionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

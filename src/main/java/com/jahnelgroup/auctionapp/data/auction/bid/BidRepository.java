@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.auction.bid;
+package com.jahnelgroup.auctionapp.data.auction.bid;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

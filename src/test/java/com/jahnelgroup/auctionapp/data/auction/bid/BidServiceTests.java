@@ -1,8 +1,8 @@
-package com.jahnelgroup.auctionapp.auction.bid;
+package com.jahnelgroup.auctionapp.data.auction.bid;
 
-import com.jahnelgroup.auctionapp.auction.Auction;
-import com.jahnelgroup.auctionapp.auction.AuctionRepository;
-import com.jahnelgroup.auctionapp.auction.AuctionServiceImpl;
+import com.jahnelgroup.auctionapp.data.auction.Auction;
+import com.jahnelgroup.auctionapp.data.auction.AuctionRepository;
+import com.jahnelgroup.auctionapp.data.auction.AuctionServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

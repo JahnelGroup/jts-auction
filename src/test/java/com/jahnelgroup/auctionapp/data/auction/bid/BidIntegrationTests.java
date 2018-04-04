@@ -1,8 +1,8 @@
-package com.jahnelgroup.auctionapp.auction.bid;
+package com.jahnelgroup.auctionapp.data.auction.bid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jahnelgroup.auctionapp.auction.Auction;
-import com.jahnelgroup.auctionapp.auction.AuctionService;
+import com.jahnelgroup.auctionapp.data.auction.Auction;
+import com.jahnelgroup.auctionapp.data.auction.AuctionService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;

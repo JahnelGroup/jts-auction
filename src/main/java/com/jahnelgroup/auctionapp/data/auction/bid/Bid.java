@@ -1,7 +1,8 @@
-package com.jahnelgroup.auctionapp.auction.bid;
+package com.jahnelgroup.auctionapp.data.auction.bid;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jahnelgroup.auctionapp.auction.Auction;
+import com.jahnelgroup.auctionapp.data.AbstractEntity;
+import com.jahnelgroup.auctionapp.data.auction.Auction;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 @Data
 @ToString(exclude = "auction")
 @EqualsAndHashCode(exclude = "auction")
-public class Bid {
+public class Bid extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

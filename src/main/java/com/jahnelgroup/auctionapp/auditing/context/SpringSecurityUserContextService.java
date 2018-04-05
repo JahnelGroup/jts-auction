@@ -1,12 +1,13 @@
 package com.jahnelgroup.auctionapp.auditing.context;
 
-import com.jahnelgroup.auctionapp.data.user.User;
-import com.jahnelgroup.auctionapp.data.user.UserRepository;
-import com.jahnelgroup.auctionapp.security.AuthenticatedUser;
+import com.jahnelgroup.auctionapp.domain.user.User;
+import com.jahnelgroup.auctionapp.domain.user.UserRepository;
 import com.jahnelgroup.auctionapp.security.UnauthorizedException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -29,10 +30,15 @@ public class SpringSecurityUserContextService implements UserContextService {
     @Override
     public Long getCurrentUserId() {
         Object p = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if( !(p instanceof AuthenticatedUser) ){
+        if( !(p instanceof UserDetails) ){
             throw new UnauthorizedException();
         }else{
-            return ((AuthenticatedUser)p).getUser().getId();
+            UserDetails userDetails = (UserDetails)p;
+            Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
+            if( user.isPresent() ){
+                throw new UsernameNotFoundException(userDetails.getUsername());
+            }
+            return user.get().getId();
         }
     }
 

@@ -1,9 +1,8 @@
 package com.jahnelgroup.auctionapp.security;
 
-import com.jahnelgroup.auctionapp.data.user.User;
-import com.jahnelgroup.auctionapp.data.user.UserRepository;
+import com.jahnelgroup.auctionapp.domain.user.User;
+import com.jahnelgroup.auctionapp.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,8 +25,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Web Security Configuration
@@ -42,9 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.signing-key}")
     private String signingKey;
 
-    @Value("${security.encoding-strength}")
-    private Integer encodingStrength;
-
     @Value("${security.security-realm}")
     private String securityRealm;
 
@@ -53,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
@@ -104,16 +101,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected UserDetailsService userDetailsService() { return username -> {
+    protected UserDetailsService userDetailsService() {
+        return username -> {
             Optional<User> optionalUser = userRepository.findByUsername(username);
             if( !optionalUser.isPresent() ){
                 throw new UsernameNotFoundException(username);
             }
-            return optionalUser.map(user -> new AuthenticatedUser(
-                    user,
-                    username,
-                    passwordEncoder().encode(user.getPassword()),
-                    new ArrayList<>())).get();
+
+            User user = optionalUser.get();
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            user.getRoles().forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+            });
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), authorities);
         };
     }
 }

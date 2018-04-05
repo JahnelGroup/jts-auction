@@ -1,6 +1,6 @@
 package com.jahnelgroup.auctionapp.auditing.context;
 
-import com.jahnelgroup.auctionapp.data.user.User;
+import com.jahnelgroup.auctionapp.domain.user.User;
 
 public interface UserContextService {
 

@@ -4,7 +4,7 @@ import com.jahnelgroup.auctionapp.auditing.context.CurrentTimeDateTimeService;
 import com.jahnelgroup.auctionapp.auditing.context.DateTimeService;
 import com.jahnelgroup.auctionapp.auditing.context.SpringSecurityUserContextService;
 import com.jahnelgroup.auctionapp.auditing.context.UserContextService;
-import com.jahnelgroup.auctionapp.data.user.UserRepository;
+import com.jahnelgroup.auctionapp.domain.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.auditing.DateTimeProvider;

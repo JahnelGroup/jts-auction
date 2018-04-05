@@ -33,7 +33,7 @@ public class AuditConfig {
     }
 
     @Bean
-    AuditorAware<Long> userContextProvider(UserContextService userContextService){
-        return () -> Optional.of(userContextService.getCurrentUserId());
+    AuditorAware<String> userContextProvider(UserContextService userContextService){
+        return () -> Optional.of(userContextService.getCurrentUsername());
     }
 }

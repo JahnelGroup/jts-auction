@@ -32,6 +32,8 @@ import java.util.Optional;
  * Web Security Configuration
  *
  * https://medium.com/@nydiarra/secure-a-spring-boot-rest-api-with-json-web-token-reference-to-angular-integration-e57a25806c50
+ * https://github.com/nydiarra/springboot-jwt
+ *
  * http://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
  */
 @Configuration
@@ -96,7 +98,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .realmName(securityRealm)
                 .and()
                 .csrf()
-                .disable();
+                .disable()
+                .anonymous().disable()
+        ;
 
     }
 

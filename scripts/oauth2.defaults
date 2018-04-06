@@ -1,0 +1,6 @@
+export OAUTH2_API_KEY=testjwtclientid
+export OAUTH2_API_SECRET=XY7kmzoNzl100
+export OAUTH2_GRANT_TYPE=password
+export OAUTH2_USER=admin
+export OAUTH2_PASS=admin
+export OAUTH2_AUTHORIZATION_URL=localhost:8080/api/oauth/token

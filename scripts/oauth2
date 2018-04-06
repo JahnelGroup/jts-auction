@@ -1,0 +1,114 @@
+#!/bin/bash
+#
+# OAuth2 Token Helper Script
+#
+# 1. Put this script somewhere on your path
+#
+# 2. Set the required variables somewhere automatically (.bashrc, .bash_profile, etc)
+#
+# 3. This script will export a variable called OAUTH2_USER in the format 'Authorization: Bearer $TOKEN'
+#
+# Example use:
+#
+#   $ . oauth2 -u=user1 -p=pass1
+#   $ http :8080/api/something "$OAUTH2_TOKEN"
+#       -or-
+#   $ http://localhost:8080/api/something -H "$OAUTH2_TOKEN"
+#
+#
+# Verbose:
+#
+#   $ . oauth2 -u=user1 -p=pass1 -v
+#   $ user=user1 token=eyJhbGciO........
+#
+
+ARG_OAUTH2_API_KEY=
+ARG_OAUTH2_API_SECRET=
+ARG_OAUTH2_AUTHORIZATION_URL=
+ARG_OAUTH2_USER=
+ARG_OAUTH2_PASS=
+PROPERTY_FILE=./oauth2.defaults
+VERBOSE=false
+
+for i in "$@"
+do
+case $i in
+    -k=*|--key=*)
+    ARG_OAUTH2_API_KEY="${i#*=}"
+    shift # past argument=value
+    ;;
+    -s=*|--secret=*)
+    ARG_OAUTH2_API_SECRET="${i#*=}"
+    shift # past argument=value
+    ;;
+    -a=*|--auth=*)
+    ARG_OAUTH2_AUTHORIZATION_URL="${i#*=}"
+    shift # past argument=value
+    ;;
+    -u=*|--user=*)
+    ARG_OAUTH2_USER="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--pass=*)
+    ARG_OAUTH2_PASS="${i#*=}"
+    shift # past argument=value
+    ;;
+    -f=*|--file=*)
+    PROPERTY_FILE="${i#*=}"
+    shift # past argument=value
+    ;;
+    -v|--verbose)
+    VERBOSE="true"
+    shift # past argument
+    ;;
+    *)
+        echo "Unknown arg $i"; return;
+    ;;
+esac
+done
+
+if [ -f $PROPERTY_FILE ]; then
+  source $PROPERTY_FILE;
+fi
+
+OAUTH2_API_KEY="${ARG_OAUTH2_API_KEY:-$OAUTH2_API_KEY}"
+OAUTH2_API_SECRET="${ARG_OAUTH2_API_SECRET:-$OAUTH2_API_SECRET}"
+OAUTH2_GRANT_TYPE="${ARG_OAUTH2_GRANT_TYPE:-$OAUTH2_GRANT_TYPE}"
+OAUTH2_USER="${ARG_OAUTH2_USER:-$OAUTH2_USER}"
+OAUTH2_PASS="${ARG_OAUTH2_PASS:-$OAUTH2_PASS}"
+OAUTH2_AUTHORIZATION_URL="${ARG_OAUTH2_AUTHORIZATION_URL:-$OAUTH2_AUTHORIZATION_URL}"
+
+if [ -z "$OAUTH2_API_KEY" ];            then echo "Set OAUTH2_API_KEY"; return; fi
+if [ -z "$OAUTH2_API_SECRET" ];         then echo "Set OAUTH2_API_SECRET"; return; fi
+if [ -z "$OAUTH2_GRANT_TYPE" ];         then echo "Set OAUTH2_GRANT_TYPE"; return; fi
+if [ -z "$OAUTH2_USER" ];               then echo "Set OAUTH2_USER"; return; fi
+if [ -z "$OAUTH2_PASS" ];               then echo "Set OAUTH2_PASS"; return; fi
+if [ -z "$OAUTH2_AUTHORIZATION_URL" ];  then echo "Set OAUTH2_AUTHORIZATION_URL"; return; fi
+
+if [ "$VERBOSE" == "true" ]; then
+  echo "curl ${OAUTH2_API_KEY}:${OAUTH2_API_SECRET}@${OAUTH2_AUTHORIZATION_URL} -d grant_type=${OAUTH2_GRANT_TYPE} -d username=${OAUTH2_USER} -d password=${OAUTH2_PASS}"
+  echo ""
+fi
+
+TOKEN=`curl -s ${OAUTH2_API_KEY}:${OAUTH2_API_SECRET}@${OAUTH2_AUTHORIZATION_URL} -d grant_type=${OAUTH2_GRANT_TYPE} -d username=${OAUTH2_USER} -d password=${OAUTH2_PASS} | sed 's/{"access_token":"\([^"]*\).*/\1/g'`
+
+if [ "$VERBOSE" == "true" ]; then
+  echo "user=$OAUTH2_USER token=$TOKEN"
+fi
+
+if [ -z "$TOKEN" ]; then
+  echo "Something went wrong, use -verbose."
+  export OAUTH2_TOKEN=
+  return;
+fi
+
+TOKEN_LEN=$(echo -n $TOKEN | wc -m)
+if [ $TOKEN_LEN -ne 335 ]; then
+  echo "Token is $TOKEN_LEN but should be 355, looks wrong."
+  echo "Token=$TOKEN"
+  export OAUTH2_TOKEN=
+  return;
+fi
+
+export OAUTH2_TOKEN="Authorization: Bearer $TOKEN"
+

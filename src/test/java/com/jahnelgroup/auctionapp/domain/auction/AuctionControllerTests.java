@@ -1,6 +1,7 @@
 package com.jahnelgroup.auctionapp.domain.auction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jahnelgroup.auctionapp.AbstractMockMvcTest;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,6 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,8 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @WebMvcTest(AuctionController.class)
-@WithMockUser(username="user1",roles={"USER","ADMIN"})
-public class AuctionControllerTests {
+public class AuctionControllerTests extends AbstractMockMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,12 +51,14 @@ public class AuctionControllerTests {
      */
     @Test
     public void findAllWithOneResultShouldReturnIt() throws Exception {
+        String accessToken = obtainAccessToken("admin", "admin");
+
         Auction auction = new Auction();
         auction.setName("myAuction");
 
         when(auctionService.findAll()).thenReturn(Arrays.asList(auction));
 
-        mockMvc.perform(get("/auctions"))
+        mockMvc.perform(get("/auctions").header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))

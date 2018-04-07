@@ -1,5 +1,5 @@
-export OAUTH2_API_KEY=testjwtclientid
-export OAUTH2_API_SECRET=XY7kmzoNzl100
+export OAUTH2_API_KEY=jtsauctionclient
+export OAUTH2_API_SECRET=WELU9g3wuZm51
 export OAUTH2_GRANT_TYPE=password
 export OAUTH2_USER=admin
 export OAUTH2_PASS=admin

@@ -102,13 +102,5 @@ if [ -z "$TOKEN" ]; then
   return;
 fi
 
-TOKEN_LEN=$(echo -n $TOKEN | wc -m)
-if [ $TOKEN_LEN -ne 335 ]; then
-  echo "Token is $TOKEN_LEN but should be 355, looks wrong."
-  echo "Token=$TOKEN"
-  export OAUTH2_TOKEN=
-  return;
-fi
-
 export OAUTH2_TOKEN="Authorization: Bearer $TOKEN"
 

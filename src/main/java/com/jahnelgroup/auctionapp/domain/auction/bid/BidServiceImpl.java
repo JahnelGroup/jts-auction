@@ -57,8 +57,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Bid update(Auction auction, Bid incoming, Bid current) {
-        BeanUtils.copyProperties(incoming, current, "id", "auction");
-        return save(auction, current);
+        return save(auction, current.copyFields(incoming, "auction"));
     }
 
     @Override

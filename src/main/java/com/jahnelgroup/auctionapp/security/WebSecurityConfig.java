@@ -41,7 +41,7 @@ import java.util.Optional;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.signing-key}")
     private String signingKey;
@@ -53,7 +53,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Integer securityStrength;
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthUserDetailsService userDetailsService;
+
+    @Autowired
+    private RestAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(securityStrength);
+    }
 
     @Bean
     @Override
@@ -61,40 +69,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    @Bean
-    protected AuthenticationEntryPoint authenticationEntryPoint(){
-        return new RestAuthenticationEntryPoint();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(securityStrength);
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .httpBasic()
-//                .realmName(securityRealm)
-//                .and()
-//                .csrf()
-//                .disable()
-//                .anonymous().disable()
-//        ;
-
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
-                .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint())
+                .and().httpBasic().authenticationEntryPoint(authenticationEntryPoint)
                 .and().headers().frameOptions().disable()
                 .and().csrf().disable();
     }
@@ -120,23 +106,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultTokenServices;
     }
 
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return username -> {
-            Optional<User> optionalUser = userRepository.findByUsername(username);
-            if( !optionalUser.isPresent() ){
-                throw new UsernameNotFoundException(username);
-            }
-
-            User user = optionalUser.get();
-
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            user.getRoles().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-            });
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(), user.getPassword(), authorities);
-        };
-    }
 }

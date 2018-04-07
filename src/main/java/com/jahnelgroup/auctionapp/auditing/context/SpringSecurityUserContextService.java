@@ -2,7 +2,7 @@ package com.jahnelgroup.auctionapp.auditing.context;
 
 import com.jahnelgroup.auctionapp.domain.user.User;
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;
-import com.jahnelgroup.auctionapp.security.UnauthorizedException;
+import com.jahnelgroup.auctionapp.security.UnauthenticaedException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +21,7 @@ public class SpringSecurityUserContextService implements UserContextService {
     public User getCurrentUser() {
         Optional<User> u = userRepository.findById(getCurrentUserId());
         if( !u.isPresent() ){
-            throw new UnauthorizedException();
+            throw new UnauthenticaedException();
         }else{
             return u.get();
         }
@@ -31,7 +31,7 @@ public class SpringSecurityUserContextService implements UserContextService {
     public Long getCurrentUserId() {
         Object p = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if( !(p instanceof UserDetails) ){
-            throw new UnauthorizedException();
+            throw new UnauthenticaedException();
         }else{
             UserDetails userDetails = (UserDetails)p;
             Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
@@ -46,7 +46,7 @@ public class SpringSecurityUserContextService implements UserContextService {
     public String getCurrentUsername() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if( username == null ){
-            throw new UnauthorizedException();
+            throw new UnauthenticaedException();
         }else{
             return username;
         }

@@ -32,8 +32,7 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public Auction update(Auction incoming, Auction current) {
-        BeanUtils.copyProperties(incoming, current, "id", "bids");
-        return save(current);
+        return save(current.copyFields(incoming, "bids"));
     }
 
     @Override

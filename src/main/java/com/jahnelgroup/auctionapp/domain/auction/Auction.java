@@ -22,7 +22,6 @@ import java.util.Optional;
 @EqualsAndHashCode(exclude = "bids")
 public class Auction extends AbstractEntity {
 
-    @NotNull
     private String name;
 
     private String description;

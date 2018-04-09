@@ -4,7 +4,6 @@ import com.jahnelgroup.auctionapp.domain.user.Role.Role;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,11 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String username;
 
-    @NotNull
-    @Column(length = 60)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

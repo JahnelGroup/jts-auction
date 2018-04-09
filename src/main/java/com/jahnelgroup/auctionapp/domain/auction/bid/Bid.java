@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
 /**
@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(exclude = "auction")
 public class Bid extends AbstractEntity {
 
-    @NotNull
     private BigDecimal amount;
 
     @JsonIgnore

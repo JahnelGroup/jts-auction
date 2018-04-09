@@ -54,7 +54,7 @@ public interface BidService {
 
 ### REST API
 
-Your clients will interact with Auctions and Bids *through* the **Auction** aggregate. **Bids** Entity's only exist under an auction and cannot be created directly - they are applied to the Auction. 
+Your clients will interact with Auctions and Bids *through* the **Auction** aggregate. **Bids** Entity's only exist under an Auction and cannot be created directly - they are applied to the Auction. 
 
 **Auction**
 
@@ -77,18 +77,19 @@ Your clients will interact with Auctions and Bids *through* the **Auction** aggr
 | DELETE | /auctions/{auctionId}/bids/{bidId} | Delete one Bid from an Auction | master  |
 
 ### Example usages of API 
-#### Create 
+
+Create an Auction.
 
 ```bash
 $ http -v POST :8080/api/auctions name="Auction 1"
 POST /api/auctions HTTP/1.1
-Accept: application/json
+Accept: application/json, */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
 Content-Length: 21
 Content-Type: application/json
 Host: localhost:8080
-User-Agent: HTTPie/0.9.4
+User-Agent: HTTPie/0.9.9
 
 {
     "name": "Auction 1"
@@ -96,127 +97,156 @@ User-Agent: HTTPie/0.9.4
 
 HTTP/1.1 201 
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 03 Apr 2018 15:14:19 GMT
+Date: Mon, 09 Apr 2018 20:50:41 GMT
 Transfer-Encoding: chunked
 
 {
-    "description": null,
-    "id": 1,
+    "description": null, 
+    "id": 1, 
     "name": "Auction 1"
 }
 ```
 
-#### Read
-
-Find all auctions.
+Add first Bid.
 
 ```bash
-$ http -v GET :8080/api/auctions
-GET /api/auctions HTTP/1.1
+$ http -v POST :8080/api/auctions/1/bids amount=50.00
+POST /api/auctions/1/bids HTTP/1.1
+Accept: application/json, */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 19
+Content-Type: application/json
+Host: localhost:8080
+User-Agent: HTTPie/0.9.9
+
+{
+    "amount": "50.00"
+}
+
+HTTP/1.1 201 
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 09 Apr 2018 20:50:57 GMT
+Transfer-Encoding: chunked
+
+{
+    "amount": 50.0, 
+    "id": 1
+}
+```
+
+Add second Bid.
+
+```bash
+$ http -v POST :8080/api/auctions/1/bids amount=25.00
+POST /api/auctions/1/bids HTTP/1.1
+Accept: application/json, */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 19
+Content-Type: application/json
+Host: localhost:8080
+User-Agent: HTTPie/0.9.9
+
+{
+    "amount": "25.00"
+}
+
+HTTP/1.1 201 
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 09 Apr 2018 20:51:03 GMT
+Transfer-Encoding: chunked
+
+{
+    "amount": 25.0, 
+    "id": 2
+}
+```
+
+List Bids.
+
+```bash
+$ http -v GET :8080/api/auctions/1/bids
+GET /api/auctions/1/bids HTTP/1.1
 Accept: */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
 Host: localhost:8080
-User-Agent: HTTPie/0.9.4
+User-Agent: HTTPie/0.9.9
+
+
 
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 03 Apr 2018 15:14:48 GMT
+Date: Mon, 09 Apr 2018 20:51:21 GMT
 Transfer-Encoding: chunked
 
 [
     {
-        "description": null,
-        "id": 1,
-        "name": "Auction 1"
-    },
+        "amount": 50.0, 
+        "id": 1
+    }, 
     {
-        "description": null,
-        "id": 2,
-        "name": "Auction 2"
+        "amount": 25.0, 
+        "id": 2
     }
 ]
-``` 
-
-Find one auction.
-
-```bash
-$ http -v GET :8080/api/auctions/2
-GET /api/auctions/2 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-Connection: keep-alive
-Host: localhost:8080
-User-Agent: HTTPie/0.9.4
-
-HTTP/1.1 200 
-Content-Type: application/json;charset=UTF-8
-Date: Tue, 03 Apr 2018 15:15:30 GMT
-Transfer-Encoding: chunked
-
-{
-    "description": null,
-    "id": 2,
-    "name": "Auction 2"
-}
 ```
 
-#### Update
+Update second Bid.
 
 ```bash
-$ http -v PUT :8080/api/auctions/2 name="Updated Auction 2" description="Adding desc"
-PUT /api/auctions/2 HTTP/1.1
-Accept: application/json
+$ http -v PUT :8080/api/auctions/1/bids/2 amount=65.00
+PUT /api/auctions/1/bids/2 HTTP/1.1
+Accept: application/json, */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Content-Length: 59
+Content-Length: 19
 Content-Type: application/json
 Host: localhost:8080
-User-Agent: HTTPie/0.9.4
+User-Agent: HTTPie/0.9.9
 
 {
-    "description": "Adding desc",
-    "name": "Updated Auction 2"
+    "amount": "65.00"
 }
 
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 03 Apr 2018 15:17:17 GMT
+Date: Mon, 09 Apr 2018 20:51:48 GMT
 Transfer-Encoding: chunked
 
 {
-    "description": "Adding desc",
-    "id": 2,
-    "name": "Updated Auction 2"
+    "amount": 65.0, 
+    "id": 2
 }
 ```
 
-#### Delete
+List Bids again.
 
 ```bash
-$ http -v DELETE :8080/api/auctions/1
-DELETE /api/auctions/1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-Connection: keep-alive
-Content-Length: 0
-Host: localhost:8080
-User-Agent: HTTPie/0.9.4
-
-HTTP/1.1 204 
-Date: Tue, 03 Apr 2018 15:17:56 GMT
-
-
-
-$ http -v GET :8080/api/auctions/1
-GET /api/auctions/1 HTTP/1.1
+$ http -v GET :8080/api/auctions/1/bids
+GET /api/auctions/1/bids HTTP/1.1
 Accept: */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
 Host: localhost:8080
-User-Agent: HTTPie/0.9.4
+User-Agent: HTTPie/0.9.9
 
-HTTP/1.1 404 
-Content-Length: 0
-Date: Tue, 03 Apr 2018 15:18:00 GMT
+
+
+HTTP/1.1 200 
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 09 Apr 2018 20:51:51 GMT
+Transfer-Encoding: chunked
+
+[
+    {
+        "amount": 50.0, 
+        "id": 1
+    }, 
+    {
+        "amount": 65.0, 
+        "id": 2
+    }
+]
 ```

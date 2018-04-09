@@ -7,8 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
@@ -19,6 +18,10 @@ import java.math.BigDecimal;
 @ToString(exclude = "auction")
 @EqualsAndHashCode(exclude = "auction")
 public class Bid extends AbstractEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private BigDecimal amount;
 

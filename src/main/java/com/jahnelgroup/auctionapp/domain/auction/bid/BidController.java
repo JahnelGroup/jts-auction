@@ -93,7 +93,7 @@ public class BidController {
      */
     @PutMapping("/{bidId}")
     public ResponseEntity<Bid> update(@PathVariable("auctionId") Optional<Auction> auction,
-            @PathVariable("bidId") Optional<Bid> current, @Valid @RequestBody Bid incoming){
+            @PathVariable("bidId") Optional<Bid> current, @RequestBody Bid incoming){
         if( auction.isPresent() && current.isPresent() ){
             return new ResponseEntity<>(bidService.update(auction.get(), incoming, current.get()), HttpStatus.OK);
         }else{

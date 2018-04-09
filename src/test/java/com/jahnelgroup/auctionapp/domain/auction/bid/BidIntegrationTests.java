@@ -1,6 +1,5 @@
 package com.jahnelgroup.auctionapp.domain.auction.bid;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jahnelgroup.auctionapp.AbstractIntegrationTest;
 import com.jahnelgroup.auctionapp.domain.auction.AuctionService;
 import org.hamcrest.Matchers;
@@ -9,26 +8,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Bid integration tests.
+ */
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @SpringBootTest

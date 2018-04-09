@@ -1,13 +1,10 @@
 package com.jahnelgroup.auctionapp.domain.auction;
 
-import com.jahnelgroup.auctionapp.auditing.context.UserContextService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -38,8 +35,7 @@ public class AuctionController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+    public ResponseEntity<Auction> save(@RequestBody Auction auction){
         return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
     }
 
@@ -79,7 +75,7 @@ public class AuctionController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @Valid @RequestBody Auction incoming){
+    public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @RequestBody Auction incoming){
         if ( current.isPresent() ){
             return ResponseEntity.ok(auctionService.update(incoming, current.get()));
         }else{
@@ -93,11 +89,10 @@ public class AuctionController {
      * DELETE /auctions/1
      *
      * @param before
-     * @param id
      * @return
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before, @PathVariable Long id){
+    public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before){
         if( before.isPresent() ){
             auctionService.delete(before.get());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

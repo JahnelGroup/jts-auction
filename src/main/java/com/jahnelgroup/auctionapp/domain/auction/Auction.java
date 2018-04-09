@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +20,10 @@ import java.util.Optional;
 @ToString(exclude = "bids")
 @EqualsAndHashCode(exclude = "bids")
 public class Auction extends AbstractEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
 

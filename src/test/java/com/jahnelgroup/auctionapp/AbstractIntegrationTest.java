@@ -39,15 +39,6 @@ public abstract class AbstractIntegrationTest {
     @Value("${security.jwt.grant-type}")
     private String grantType;
 
-    @Value("${security.jwt.scope-read}")
-    private String scopeRead;
-
-    @Value("${security.jwt.scope-write}")
-    private String scopeWrite = "write";
-
-    @Value("${security.jwt.resource-ids}")
-    private String resourceIds;
-
     private String accessToken = null;
     private String username = null;
     private String password = null;

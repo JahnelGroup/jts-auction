@@ -48,12 +48,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
         configurer
-                .inMemory()
+            .inMemory()
+
+                // Rest API
                 .withClient(clientId)
                 .secret(clientSecret)
                 .authorizedGrantTypes(grantType)
                 .scopes(scopeRead, scopeWrite)
-                .resourceIds(resourceIds);
+                .resourceIds(resourceIds)
+
+//            .and()
+//
+//                // Front End
+//                .withClient("frontend")
+//                .authorizedGrantTypes("implicit")
+//                .redirectUris("/api/home")
+//                .scopes(scopeRead, scopeWrite)
+//                .autoApprove(true)
+//                .resourceIds(resourceIds)
+        ;
     }
 
     @Override

@@ -45,7 +45,17 @@ public interface BidService {
 
 ### REST API
 
-#### Create
+** Auction**
+| Method | Path           | Description         |  
+| ------ | ---------------| ------------------- |
+| POST   | /auctions      | Create one Auction  |   
+| GET    | /auctions/{id} | Read one Auction    |
+| GET    | /auctions      | Read all Auctions   |
+| PUT    | /auctions/{id} | Update one Auction  |
+| DELETE | /auctions/{id} | Delete one Auction  |
+
+### Example usages of API 
+#### Create 
 
 ```bash
 $ http -v POST :8080/api/auctions name="Auction 1"

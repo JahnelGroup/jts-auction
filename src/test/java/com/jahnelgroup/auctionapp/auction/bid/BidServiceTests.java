@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Auction service unit tests.
+ * Bid service unit tests.
  */
 @SuppressWarnings("Duplicates")
 @RunWith(MockitoJUnitRunner.class)

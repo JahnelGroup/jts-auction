@@ -255,7 +255,7 @@ Transfer-Encoding: chunked
 
 The **2-security** branch introduces OAuth2 with the [Password Grant](https://www.oauth.com/oauth2-servers/access-tokens/password-grant/) flow. I wrote a helpful [oauth2](https://github.com/JahnelGroup/jts-auction/tree/2-security/scripts) script with a defaults file that should get you going really fast.
 
-The first thing you need to do is **source** the oauth2 script because it will export a $OAUTH2_TOKEN variable to your enviroment that you can pass to the tool of your choice. It's important that you **source** the script and not just run it or else the variable will not be exported.
+The first thing you need to do is **source** the oauth2 script because it will export a **$OAUTH2_TOKEN** variable to your enviroment that you can pass to the tool of your choice. It's important that you **source** the script and not just run it or else the variable will not be exported.
 
 * **Read:** [What is the difference between executing a Bash script vs sourcing it?](https://superuser.com/questions/176783/what-is-the-difference-between-executing-a-bash-script-vs-sourcing-it)
 

@@ -2,6 +2,7 @@ package com.jahnelgroup.auctionapp.security;
 
 import com.jahnelgroup.auctionapp.domain.user.User;
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@AllArgsConstructor
 public class AuthUserDetailsService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
     @Override

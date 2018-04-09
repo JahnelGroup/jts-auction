@@ -104,3 +104,6 @@ fi
 
 export OAUTH2_TOKEN="Authorization: Bearer $TOKEN"
 
+echo "The variable \$OAUTH2_TOKEN now contains your token. Use like this:"
+echo "  http :8080/api \"\$OAUTH2_TOKEN\""
+echo "  curl localhost:8080/api -H \"\$OAUTH2_TOKEN\""

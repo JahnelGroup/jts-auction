@@ -1,6 +1,5 @@
 package com.jahnelgroup.auctionapp.security;
 
-import com.jahnelgroup.auctionapp.domain.user.User;
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,21 +13,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.AuthenticationEntryPoint;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Web Security Configuration
@@ -53,10 +43,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Integer securityStrength;
 
     @Autowired
-    private AuthUserDetailsService userDetailsService;
+    private RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    private RestAuthenticationEntryPoint authenticationEntryPoint;
+    UserDetailsService authUserDetailsService;
+
+    @Bean
+    protected UserDetailsService authUserDetailsService(UserRepository userRepository){
+        return new AuthUserDetailsService(userRepository);
+    }
+
+    @Bean
+    protected RestAuthenticationEntryPoint authenticationEntryPoint(){
+        return new RestAuthenticationEntryPoint();
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(authUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 

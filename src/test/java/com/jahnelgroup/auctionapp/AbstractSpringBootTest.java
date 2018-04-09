@@ -1,8 +1,10 @@
 package com.jahnelgroup.auctionapp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,31 +15,28 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AbstractMockMvcTest {
+@AutoConfigureMockMvc
+@DirtiesContext
+public abstract class AbstractSpringBootTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
-    @Value("${security.jwt.client-id}")
-    private String clientId;
+    @Autowired
+    protected ObjectMapper objectMapper;
 
-    @Value("${security.jwt.client-secret}")
-    private String clientSecret;
+    private String obtainAccessToken(String username, String password) throws Exception {
 
-    @Value("${security.jwt.grant-type}")
-    private String grantType;
-
-    protected String obtainAccessToken(String username, String password) throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", grantType);
-        params.add("client_id", clientId);
+        params.add("grant_type", "password");
+        params.add("client_id", "fooClientIdPassword");
         params.add("username", username);
         params.add("password", password);
 
         ResultActions result
                 = mockMvc.perform(post("/oauth/token")
                 .params(params)
-                .with(httpBasic(clientId,clientSecret))
+                .with(httpBasic("fooClientIdPassword","secret"))
                 .accept("application/json;charset=UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
@@ -47,4 +46,5 @@ public class AbstractMockMvcTest {
         JacksonJsonParser jsonParser = new JacksonJsonParser();
         return jsonParser.parseMap(resultString).get("access_token").toString();
     }
+
 }

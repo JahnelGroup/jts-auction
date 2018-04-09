@@ -19,9 +19,18 @@ Learning is best accomplished through practice. This repo is the use-case we fol
 | X-ui           | Added basic UI                                            |
 | X-websockets   | Added real-time updates with websockets                   |
 
+Starting with master each branch incrementally adds another layer of complexity to the overall solution. This approach should reduce the complexity of jumping into a fully configured project right from the beginning. 
+
+### Domain Design
+
+This application is modeled after [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) principles. The primary [Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html) is an **Auction** with it's primary Entity being a **Bid**. As we layer on security the next primary Aggregate will a **User**. 
+
+* **Read:** [DDD-Entities-Value-Objects-Explained](http://blog.sapiensworks.com/post/2016/07/29/DDD-Entities-Value-Objects-Explained)
+
 ### Interfaces
 
 The two primary interfaces you will implement are the AuctionService and BidService.
+
 ```java
 public interface AuctionService {
     Iterable<Auction> findAll();
@@ -45,14 +54,27 @@ public interface BidService {
 
 ### REST API
 
-** Auction**
-| Method | Path           | Description         |  
-| ------ | ---------------| ------------------- |
-| POST   | /auctions      | Create one Auction  |   
-| GET    | /auctions/{id} | Read one Auction    |
-| GET    | /auctions      | Read all Auctions   |
-| PUT    | /auctions/{id} | Update one Auction  |
-| DELETE | /auctions/{id} | Delete one Auction  |
+Your clients will interact with Auctions and Bids *through* the **Auction** aggregate. **Bids** Entity's only exist under an auction and cannot be created directly - they are applied to the Auction. 
+
+**Auction**
+
+| Method | Path            | Description         | Branch  | 
+| ------ | --------------- | ------------------- | ------- |
+| POST   | /auctions       | Create one Auction  | master  |
+| GET    | /auctions/{id}  | Read one Auction    | master  |
+| GET    | /auctions       | Read all Auctions   | master  | 
+| PUT    | /auctions/{id}  | Update one Auction  | master  | 
+| DELETE | /auctions/{id}  | Delete one Auction  | master  |
+
+**Bid**
+
+| Method | Path                               | Description                    | Branch  | 
+| ------ | ---------------------------------- | ------------------------------ | ------- |
+| POST   | /auctions/{auctionId}/bids         | Adds one Bid to an Auction     | master  |
+| GET    | /auctions/{auctionId}/bids/{bidId} | Read one Bid from an Auction   | master  |
+| GET    | /auctions/{auctionId}/bids         | Read all Bids from an Auction  | master  | 
+| PUT    | /auctions/{auctionId}/bids/{bidId} | Update one Bid from an Auction | master  | 
+| DELETE | /auctions/{auctionId}/bids/{bidId} | Delete one Bid from an Auction | master  |
 
 ### Example usages of API 
 #### Create 

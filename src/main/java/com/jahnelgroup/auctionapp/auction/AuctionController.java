@@ -90,11 +90,10 @@ public class AuctionController {
      * DELETE /auctions/1
      *
      * @param before
-     * @param id
      * @return
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before, @PathVariable Long id){
+    public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before){
         if( before.isPresent() ){
             auctionService.delete(before.get());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

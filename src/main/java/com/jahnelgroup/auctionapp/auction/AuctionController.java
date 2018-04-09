@@ -36,7 +36,7 @@ public class AuctionController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
+    public ResponseEntity<Auction> save(@RequestBody Auction auction){
         return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
     }
 
@@ -76,7 +76,7 @@ public class AuctionController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @Valid @RequestBody Auction incoming){
+    public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @RequestBody Auction incoming){
         if ( current.isPresent() ){
             return ResponseEntity.ok(auctionService.update(incoming, current.get()));
         }else{

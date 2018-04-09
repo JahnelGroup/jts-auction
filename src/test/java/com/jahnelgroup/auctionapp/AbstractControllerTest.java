@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
   */
 @Import(WebSecurityConfig.class)
 @WithMockUser(roles = "USER")
-public abstract class AbstractWebMvcTest {
+public abstract class AbstractControllerTest {
 
     /**
      * Add @WebMvcTest to the concrete test class.

@@ -1,18 +1,16 @@
 package com.jahnelgroup.auctionapp.domain.auction;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jahnelgroup.auctionapp.AbstractIntegrationTest;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,15 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@DirtiesContext
-public class AuctionIntegrationTests {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
+public class AuctionIntegrationTests extends AbstractIntegrationTest {
 
     @Autowired
     AuctionService auctionService;
@@ -41,16 +31,21 @@ public class AuctionIntegrationTests {
     @Value("classpath:/json/createAuction.json")
     Resource createAuction;
 
+    @Before
+    public void before() throws Exception{
+        login("admin", "admin");
+    }
+
     @Test
     public void integrationTest() throws Exception{
         // Validate nothing exists
-        mockMvc.perform(get("/auctions"))
+        mockMvc.perform(_get("/auctions"))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(0)));
 
         // Create one auction
-        mockMvc.perform(post("/auctions")
+        mockMvc.perform(_post("/auctions")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new String(Files.readAllBytes(Paths.get(createAuction.getURI())))))
             .andDo(print())
@@ -60,7 +55,7 @@ public class AuctionIntegrationTests {
             .andExpect(jsonPath("$.description",   Matchers.is("My First Auction")));
 
         // Validate it is returned now
-        mockMvc.perform(get("/auctions"))
+        mockMvc.perform(_get("/auctions"))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
@@ -72,7 +67,7 @@ public class AuctionIntegrationTests {
         updateAuction.setName("My New Auction");
         updateAuction.setDescription("My New Description");
 
-        mockMvc.perform(put("/auctions/1")
+        mockMvc.perform(_put("/auctions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateAuction)))
                 .andDo(print())
@@ -82,13 +77,13 @@ public class AuctionIntegrationTests {
                 .andExpect(jsonPath("$.description",   Matchers.is("My New Description")));
 
         // Delete it
-        mockMvc.perform(delete("/auctions/1"))
+        mockMvc.perform(_delete("/auctions/1"))
                 .andDo(print())
                 .andExpect(status().isNoContent()) // 204
                 .andExpect(content().string(isEmptyOrNullString()));
 
         // Validate nothing exists
-        mockMvc.perform(get("/auctions"))
+        mockMvc.perform(_get("/auctions"))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(0)));

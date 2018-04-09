@@ -1,6 +1,7 @@
 package com.jahnelgroup.auctionapp.domain.auction.bid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jahnelgroup.auctionapp.AbstractIntegrationTest;
 import com.jahnelgroup.auctionapp.domain.auction.AuctionService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -31,15 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@DirtiesContext
-public class BidIntegrationTests {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
+public class BidIntegrationTests extends AbstractIntegrationTest {
 
     @Autowired
     AuctionService auctionService;
@@ -49,20 +42,22 @@ public class BidIntegrationTests {
 
     @Before
     public void before() throws Exception{
+        login("admin", "admin");
         setupAuction();
     }
 
     @Test
     public void integrationTest() throws Exception {
+
         // Validate no bids exist
-        mockMvc.perform(get("/auctions/1/bids"))
+        mockMvc.perform(_get("/auctions/1/bids"))
                 .andDo(print())
                 .andExpect(status().isNotFound()); // 200
 
         // Submit first bid
         Bid bid1 = new Bid();
         bid1.setAmount(new BigDecimal("100.00"));
-        mockMvc.perform(post("/auctions/1/bids")
+        mockMvc.perform(_post("/auctions/1/bids")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bid1)))
                 .andDo(print())
@@ -73,7 +68,7 @@ public class BidIntegrationTests {
         // Submit second bid
         Bid bid2 = new Bid();
         bid2.setAmount(new BigDecimal("200.00"));
-        mockMvc.perform(post("/auctions/1/bids")
+        mockMvc.perform(_post("/auctions/1/bids")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bid2)))
                 .andDo(print())
@@ -82,7 +77,7 @@ public class BidIntegrationTests {
                 .andExpect(jsonPath("$.amount",   Matchers.is(200.00)));
 
         // Validate 2 bids exist
-        mockMvc.perform(get("/auctions/1/bids"))
+        mockMvc.perform(_get("/auctions/1/bids"))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -91,7 +86,7 @@ public class BidIntegrationTests {
 
         // Update bid 1
         bid1.setAmount(new BigDecimal("150.00"));
-        mockMvc.perform(put("/auctions/1/bids/1")
+        mockMvc.perform(_put("/auctions/1/bids/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bid1)))
                 .andDo(print())
@@ -100,7 +95,7 @@ public class BidIntegrationTests {
                 .andExpect(jsonPath("$.amount",   Matchers.is(150.00)));
 
         // Delete bid 2
-        mockMvc.perform(delete("/auctions/1/bids/2"))
+        mockMvc.perform(_delete("/auctions/1/bids/2"))
                 .andDo(print())
                 .andExpect(status().isNoContent()) // 204
                 .andExpect(content().string(isEmptyOrNullString()));
@@ -108,7 +103,7 @@ public class BidIntegrationTests {
         // Submit third bid
         Bid bid3 = new Bid();
         bid3.setAmount(new BigDecimal("300.00"));
-        mockMvc.perform(post("/auctions/1/bids")
+        mockMvc.perform(_post("/auctions/1/bids")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bid3)))
                 .andDo(print())
@@ -117,7 +112,7 @@ public class BidIntegrationTests {
                 .andExpect(jsonPath("$.amount",   Matchers.is(300.00)));
 
         // Validate bid 1 was updated, bid 2 was deleted, and bid 3 was added
-        mockMvc.perform(get("/auctions/1/bids"))
+        mockMvc.perform(_get("/auctions/1/bids"))
                 .andDo(print())
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -132,7 +127,7 @@ public class BidIntegrationTests {
      */
     private void setupAuction() throws Exception {
         // Create one auction
-        mockMvc.perform(post("/auctions")
+        mockMvc.perform(_post("/auctions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new String(Files.readAllBytes(Paths.get(createAuction.getURI())))))
                 .andDo(print())

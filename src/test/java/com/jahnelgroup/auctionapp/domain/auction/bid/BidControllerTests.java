@@ -1,6 +1,6 @@
 package com.jahnelgroup.auctionapp.domain.auction.bid;
 
-import com.jahnelgroup.auctionapp.AbstractWebMvcTest;
+import com.jahnelgroup.auctionapp.AbstractControllerTest;
 import com.jahnelgroup.auctionapp.domain.auction.Auction;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("Duplicates")
 @RunWith(SpringRunner.class)
 @WebMvcTest(BidController.class)
-public class BidControllerTests extends AbstractWebMvcTest {
+public class BidControllerTests extends AbstractControllerTest {
 
     @MockBean
     private BidService bidService;

@@ -3,15 +3,14 @@ package com.jahnelgroup.auctionapp.domain.auction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jahnelgroup.auctionapp.domain.AbstractEntity;
 import com.jahnelgroup.auctionapp.domain.auction.bid.Bid;
+import com.jahnelgroup.auctionapp.domain.auction.bid.BidComparator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Auction Aggregate Root.
@@ -31,12 +30,31 @@ public class Auction extends AbstractEntity {
 
     private String description;
 
+    /**
+     * Bids are sorted from highest to lowest via the BidComparator.
+     */
     @JsonIgnore
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bid> bids = new ArrayList<>();
+    private Set<Bid> bids = new TreeSet<>(new BidComparator());
 
+    /**
+     * Get Bid by Bid Id.
+     *
+     * @param bidId
+     * @return
+     */
     public Optional<Bid> getBidById(Long bidId){
         return bidId == null ? Optional.empty() : bids.stream().filter(bid -> bid.getId().equals(bidId)).findFirst();
+    }
+
+    /**
+     * Get the highest Bid by amount.
+     *
+     * @return
+     */
+    public Optional<Bid> getHighestBid(){
+        // they are sorted from highest to lowest
+        return bids.isEmpty() ? Optional.empty() : Optional.of(bids.iterator().next());
     }
 
     /**

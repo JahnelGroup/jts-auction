@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST mappings for the Bid Entity.
@@ -55,7 +55,7 @@ public class BidController {
     @GetMapping
     public ResponseEntity<Iterable<Bid>> findAll(@PathVariable("auctionId") Optional<Auction> auction){
         if( auction.isPresent() ){
-            List<Bid> bids = auction.get().getBids();
+            Set<Bid> bids = auction.get().getBids();
             return bids.iterator().hasNext() ? new ResponseEntity<>(bids, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{

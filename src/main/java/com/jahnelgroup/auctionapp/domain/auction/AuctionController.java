@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,12 @@ import java.util.Optional;
 public class AuctionController {
 
     private AuctionService auctionService;
+    private AuctionValidator auctionValidator;
+
+    @InitBinder
+    void initBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(auctionValidator);
+    }
 
     /**
      * Create an Auction.

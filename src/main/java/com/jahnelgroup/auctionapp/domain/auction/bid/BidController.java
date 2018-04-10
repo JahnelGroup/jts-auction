@@ -39,7 +39,7 @@ public class BidController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Bid> save(@PathVariable("auctionId") Optional<Auction> auction, @RequestBody Bid bid){
+    public ResponseEntity<Bid> save(@PathVariable("auctionId") Optional<Auction> auction, @Valid @RequestBody Bid bid){
         return auction.isPresent() ? new ResponseEntity<>(bidService.save(auction.get(), bid), HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

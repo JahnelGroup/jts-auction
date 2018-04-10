@@ -3,8 +3,10 @@ package com.jahnelgroup.auctionapp.domain.auction;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -35,7 +37,7 @@ public class AuctionController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Auction> save(@RequestBody Auction auction){
+    public ResponseEntity<Auction> save(@Valid @RequestBody Auction auction){
         return new ResponseEntity<>(auctionService.save(auction), HttpStatus.CREATED);
     }
 

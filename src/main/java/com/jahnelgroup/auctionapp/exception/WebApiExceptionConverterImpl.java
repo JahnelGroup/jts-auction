@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.WebUtils;
 
 import java.lang.reflect.Field;
 
@@ -20,7 +22,7 @@ public class WebApiExceptionConverterImpl implements WebApiExceptionConverter {
     private ApiErrorInterpolator interpolator;
 
     @Override
-    public ResponseEntity<ApiError> convert(ResponseEntity resp, Exception ex, BindingResult bindingResult) throws IllegalAccessException {
+    public ResponseEntity<ApiError> convert(WebRequest request, ResponseEntity resp, Exception ex, BindingResult bindingResult) throws IllegalAccessException {
         ApiError err = new ApiError(resp.getStatusCode(), ex.getLocalizedMessage(), ex.getClass().getSimpleName());
 
         if ( bindingResult != null ) {
@@ -30,6 +32,7 @@ public class WebApiExceptionConverterImpl implements WebApiExceptionConverter {
 
         err.setTimestamp(requestContextService.getTimestamp());
         err.setUuid(requestContextService.getUuid());
+        err.setPath(requestContextService.getPath());
 
         if( err.getFieldErrors() != null ){
             for(FieldError e : err.getFieldErrors()){

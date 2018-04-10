@@ -2,7 +2,6 @@ package com.jahnelgroup.auctionapp.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
@@ -19,6 +18,7 @@ public class ApiError {
     private String developerMessage;
     private ZonedDateTime timestamp;
     private String uuid;
+    private String path;
 
     public ApiError(HttpStatus status, String clientMessage, String developerMessage){
         this.status = status;

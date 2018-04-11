@@ -3,14 +3,17 @@ package com.jahnelgroup.auctionapp.validation.exception;
 import com.jahnelgroup.auctionapp.auditing.context.RequestContextService;
 import com.jahnelgroup.auctionapp.validation.exception.message.ApiErrorInterpolator;
 import lombok.AllArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.context.request.WebRequest;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -33,26 +36,30 @@ public class WebApiExceptionConverterImpl implements WebApiExceptionConverter {
         err.setPath(requestContextService.getPath());
 
         /**
-         * Any messages that were not resolved by Hibernate will be looked up here.
+         * Convert Errors that weren't done so already by Hibernate.
          */
-        if( err.getFieldErrors() != null ){
-            for(FieldError e : err.getFieldErrors()){
+        interpolate(err.getFieldErrors());
+        interpolate(err.getObjectErrors());
+
+        return new ResponseEntity<>(err, resp.getHeaders(), resp.getStatusCode());
+    }
+
+    private void interpolate(List<? extends DefaultMessageSourceResolvable> errors) throws IllegalAccessException{
+        if( errors != null ){
+            for(DefaultMessageSourceResolvable e : errors){
                 String message = interpolator.interpolate(e);
                 if( message != null ){
                     setDefaultMessage(e, message);
                 }
             }
         }
-
-        return new ResponseEntity<>(err, resp.getHeaders(), resp.getStatusCode());
     }
 
-    private void setDefaultMessage(FieldError e, String message) throws IllegalAccessException {
+    private void setDefaultMessage(DefaultMessageSourceResolvable e, String message) throws IllegalAccessException {
         Field defaultMessage = ReflectionUtils.findField(FieldError.class, "defaultMessage");
         ReflectionUtils.makeAccessible(defaultMessage);
         defaultMessage.set(e, message);
     }
-
 
 }
 

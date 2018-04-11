@@ -27,6 +27,7 @@ public class Auction extends AbstractEntity {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     private String description;
@@ -47,6 +48,16 @@ public class Auction extends AbstractEntity {
      */
     public Optional<Bid> getBidById(Long bidId){
         return bidId == null ? Optional.empty() : bids.stream().filter(bid -> bid.getId().equals(bidId)).findFirst();
+    }
+
+    /**
+     * Get Bid by Username.
+     *
+     * @param username
+     * @return
+     */
+    public Optional<Bid> getBidByUsername(String username){
+        return username == null ? Optional.empty() : bids.stream().filter(bid -> bid.getCreatedBy().equals(username)).findFirst();
     }
 
     /**

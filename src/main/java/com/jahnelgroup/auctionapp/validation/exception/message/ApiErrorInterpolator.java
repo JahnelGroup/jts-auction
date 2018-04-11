@@ -1,8 +1,8 @@
 package com.jahnelgroup.auctionapp.validation.exception.message;
 
-import org.springframework.validation.FieldError;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 
 public interface ApiErrorInterpolator {
 
-    String interpolate(FieldError e);
+    String interpolate(DefaultMessageSourceResolvable e);
 }

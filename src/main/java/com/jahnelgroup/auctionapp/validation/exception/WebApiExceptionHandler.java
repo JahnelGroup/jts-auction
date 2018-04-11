@@ -26,6 +26,8 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 @AllArgsConstructor
 public class WebApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -56,7 +58,7 @@ public class WebApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @return
      */
     @ExceptionHandler(RuleFailedException.class)
-    public final ResponseEntity handleRuleFailedException(RuleFailedException ex, WebRequest request) {
+    public ResponseEntity<ApiError> handleRuleFailedException(RuleFailedException ex, WebRequest request) {
         return wrap(request, new ResponseEntity("Something went wrong.", new HttpHeaders(), HttpStatus.BAD_REQUEST), ex, ex.getBindingResult());
     }
 
@@ -71,6 +73,18 @@ public class WebApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiError> handleAll(Exception ex, WebRequest request){
         ApiError err = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "An error has occurred.");
         return new ResponseEntity(err, new HttpHeaders(), err.getStatus());
+    }
+
+    /**
+     * ConstraintViolationException
+     *
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiError> handleRuleFailedException(ConstraintViolationException ex, WebRequest request) {
+        return wrap(request, new ResponseEntity("Something went wrong.", new HttpHeaders(), HttpStatus.BAD_REQUEST), ex, null);
     }
 
     @Override

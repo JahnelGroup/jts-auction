@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 import java.util.Locale;
 
@@ -17,12 +18,9 @@ public class SpringMvcErrorCodeInterpolator implements ApiErrorInterpolator {
     private MessageSource messageSource;
 
     @Override
-    public String interpolate(FieldError e)  {
-        String message = messageSource.getMessage(getResolvable(e), Locale.getDefault());
-        if( log.isDebugEnabled() ){
-            log.debug("object={} field={}, defaultMessage={}, arguments={} " +
-                "codes={} resolvedMessage={}", e.getObjectName(), e.getField(), e.getDefaultMessage(), prettyOutput(e.getArguments()), e.getCodes(), message);
-        }
+    public String interpolate(DefaultMessageSourceResolvable e)  {
+        String message = messageSource.getMessage(e, Locale.getDefault());
+        printDebug(e, message);
         return message;
     }
 
@@ -33,6 +31,30 @@ public class SpringMvcErrorCodeInterpolator implements ApiErrorInterpolator {
      */
     private DefaultMessageSourceResolvable getResolvable(FieldError e) {
         return new DefaultMessageSourceResolvable(e.getCodes(), e.getArguments());
+    }
+
+    /**
+     * Pretty print debug.
+     *
+     * @param e
+     * @param message
+     */
+    private void printDebug(DefaultMessageSourceResolvable e, String message) {
+        if( log.isDebugEnabled() ){
+            if( e instanceof FieldError){
+                FieldError fe = (FieldError)e;
+                log.debug("object={}, field={}, defaultMessage={}, arguments={} " +
+                        "codes={} resolvedMessage={}", fe.getObjectName(), fe.getField(), e.getDefaultMessage(), prettyOutput(e.getArguments()), e.getCodes(), message);
+            }else if( e instanceof ObjectError){
+                ObjectError oe = (ObjectError)e;
+                log.debug("object={}, defaultMessage={}, arguments={} " +
+                        "codes={} resolvedMessage={}", oe.getObjectName(),  e.getDefaultMessage(), prettyOutput(e.getArguments()), e.getCodes(), message);
+            }
+            else{
+                log.debug("defaultMessage={}, arguments={} " +
+                        "codes={} resolvedMessage={}", e.getDefaultMessage(), prettyOutput(e.getArguments()), e.getCodes(), message);
+            }
+        }
     }
 
     /**

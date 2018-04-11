@@ -39,9 +39,6 @@ public class AuctionIntegrationTests {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
-    AuctionService auctionService;
-
     @Value("classpath:/json/createAuction.json")
     Resource createAuction;
 

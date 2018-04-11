@@ -3,6 +3,7 @@ package com.jahnelgroup.auctionapp.domain.auction.bid;
 import com.jahnelgroup.auctionapp.domain.auction.Auction;
 import com.jahnelgroup.auctionapp.domain.auction.AuctionNotFoundException;
 import com.jahnelgroup.auctionapp.domain.auction.AuctionRepository;
+import com.jahnelgroup.auctionapp.domain.auction.bid.validation.rule.BidRuleEngine;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class BidServiceImpl implements BidService {
 
     private AuctionRepository auctionRepository;
     private BidRepository bidRepository;
+    private BidRuleEngine bidRuleEngine;
 
     @Override
     public Iterable<Bid> findAll(Auction auction) {
@@ -41,6 +43,9 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Bid save(Auction auction, Bid bid) {
+        // this will throw exceptions if failures occur
+        bidRuleEngine.execute(auction, bid);
+
         if( !auction.getBidById(bid.getId()).isPresent() ){
             auction.addBid(bid);
         }

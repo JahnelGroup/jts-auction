@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.domain.auction.bid.validation;
+package com.jahnelgroup.auctionapp.domain.auction.bid.validation.contraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = BidIncrementConstraint.class)
 public @interface BidIncrement {
 
-    String message() default "{com.jahnelgroup.auctionapp.domain.auction.bid.validation.BidIncrement.message}";
+    String message() default "{BidIncrement.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     double value() default 0.25D;

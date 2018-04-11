@@ -34,6 +34,9 @@ public class WebApiExceptionConverterImpl implements WebApiExceptionConverter {
         err.setUuid(requestContextService.getUuid());
         err.setPath(requestContextService.getPath());
 
+        /**
+         * Any messages that were not resolved by Hibernate will be looked up here.
+         */
         if( err.getFieldErrors() != null ){
             for(FieldError e : err.getFieldErrors()){
                 String message = interpolator.interpolate(e);

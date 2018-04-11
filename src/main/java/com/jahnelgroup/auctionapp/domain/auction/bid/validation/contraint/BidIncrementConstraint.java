@@ -1,9 +1,12 @@
-package com.jahnelgroup.auctionapp.domain.auction.bid.validation;
+package com.jahnelgroup.auctionapp.domain.auction.bid.validation.contraint;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
 
+/**
+ * http://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#validator-customconstraints
+ */
 public class BidIncrementConstraint implements ConstraintValidator<BidIncrement, BigDecimal> {
 
     private double increment;
@@ -15,7 +18,7 @@ public class BidIncrementConstraint implements ConstraintValidator<BidIncrement,
 
     @Override
     public boolean isValid(BigDecimal value, ConstraintValidatorContext context) {
-        return value.doubleValue() % increment == 0;
+        return value == null || value.doubleValue() % increment == 0;
     }
 
 }

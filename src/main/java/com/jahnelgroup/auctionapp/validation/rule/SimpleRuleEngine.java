@@ -1,6 +1,7 @@
 package com.jahnelgroup.auctionapp.validation.rule;
 
 import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public abstract class SimpleRuleEngine<T> implements RuleEngine<T> {
 
     @Override
     public void execute(T target, Map<Object, Object> context) {
-        Errors errors = new BeanPropertyBindingResult(target, target.getClass().getSimpleName());
+        BindingResult errors = new BeanPropertyBindingResult(target, target.getClass().getSimpleName());
 
         for(RuleDescription r : rules){
             r.getRule().execute(target, context, errors);
@@ -29,7 +30,7 @@ public abstract class SimpleRuleEngine<T> implements RuleEngine<T> {
 
         // collect errors and throw
         if( errors.hasErrors() ){
-            throw new RuntimeException("Something went wrong!!");
+            throw new RuleFailedException("Your request could not be completed.", errors);
         }
     }
 

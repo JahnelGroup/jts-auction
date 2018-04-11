@@ -1,5 +1,6 @@
 package com.jahnelgroup.auctionapp.validation.exception;
 
+import com.jahnelgroup.auctionapp.validation.rule.RuleFailedException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -47,6 +48,25 @@ public class WebApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
     }
 
+    /**
+     * Catch Rule Engine Failures.
+     *
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(RuleFailedException.class)
+    public final ResponseEntity handleRuleFailedException(RuleFailedException ex, WebRequest request) {
+        return wrap(request, new ResponseEntity("Something went wrong.", new HttpHeaders(), HttpStatus.BAD_REQUEST), ex, ex.getBindingResult());
+    }
+
+    /**
+     * Catch All.
+     *
+     * @param ex
+     * @param request
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleAll(Exception ex, WebRequest request){
         ApiError err = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "An error has occurred.");

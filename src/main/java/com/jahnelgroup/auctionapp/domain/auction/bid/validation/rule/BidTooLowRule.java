@@ -18,7 +18,7 @@ class BidTooLowRule implements Rule<Bid> {
         Optional<Bid> highestBid = auction.getHighestBid();
         if( highestBid.isPresent() ){
             if ( target.compareTo(highestBid.get()) <= 0 ){
-                errors.rejectValue("amount", "BidRejected", new Object[]{highestBid.get()}, null);
+                errors.rejectValue("amount", "BidTooLow", new Object[]{highestBid.get().getAmount().doubleValue()}, null);
             }
         }
     }

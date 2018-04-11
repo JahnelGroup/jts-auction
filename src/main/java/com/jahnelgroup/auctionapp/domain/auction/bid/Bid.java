@@ -3,7 +3,7 @@ package com.jahnelgroup.auctionapp.domain.auction.bid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jahnelgroup.auctionapp.domain.AbstractEntity;
 import com.jahnelgroup.auctionapp.domain.auction.Auction;
-import com.jahnelgroup.auctionapp.domain.auction.bid.validation.contraint.BidIncrement;
+import com.jahnelgroup.auctionapp.domain.auction.bid.validation.constraint.BidIncrement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception;
+package com.jahnelgroup.auctionapp.validation.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

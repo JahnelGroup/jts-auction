@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception.message;
+package com.jahnelgroup.auctionapp.validation.exception.message;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Component

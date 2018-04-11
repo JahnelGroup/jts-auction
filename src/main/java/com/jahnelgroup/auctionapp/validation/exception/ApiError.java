@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception;
+package com.jahnelgroup.auctionapp.validation.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

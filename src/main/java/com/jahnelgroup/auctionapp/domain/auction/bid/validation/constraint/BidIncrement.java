@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.domain.auction.bid.validation.contraint;
+package com.jahnelgroup.auctionapp.domain.auction.bid.validation.constraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

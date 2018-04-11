@@ -2,7 +2,7 @@ package com.jahnelgroup.auctionapp;
 
 import com.jahnelgroup.auctionapp.auditing.AuditConfig;
 import com.jahnelgroup.auctionapp.auditing.context.UserContextService;
-import com.jahnelgroup.auctionapp.domain.user.Role.Role;
+import com.jahnelgroup.auctionapp.domain.user.role.Role;
 import com.jahnelgroup.auctionapp.domain.user.User;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;

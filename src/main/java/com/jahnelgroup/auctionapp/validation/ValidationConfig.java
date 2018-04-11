@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception;
+package com.jahnelgroup.auctionapp.validation;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

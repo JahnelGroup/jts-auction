@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.domain.user.Role;
+package com.jahnelgroup.auctionapp.domain.user.role;
 
 import lombok.Data;
 

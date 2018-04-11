@@ -1,16 +1,14 @@
-package com.jahnelgroup.auctionapp.exception;
+package com.jahnelgroup.auctionapp.validation.exception;
 
 import com.jahnelgroup.auctionapp.auditing.context.RequestContextService;
-import com.jahnelgroup.auctionapp.exception.message.ApiErrorInterpolator;
+import com.jahnelgroup.auctionapp.validation.exception.message.ApiErrorInterpolator;
 import lombok.AllArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.util.WebUtils;
 
 import java.lang.reflect.Field;
 

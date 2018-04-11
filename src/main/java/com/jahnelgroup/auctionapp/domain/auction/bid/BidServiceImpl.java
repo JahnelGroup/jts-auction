@@ -5,9 +5,10 @@ import com.jahnelgroup.auctionapp.domain.auction.AuctionNotFoundException;
 import com.jahnelgroup.auctionapp.domain.auction.AuctionRepository;
 import com.jahnelgroup.auctionapp.domain.auction.bid.validation.rule.BidRuleEngine;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -44,7 +45,7 @@ public class BidServiceImpl implements BidService {
     @Override
     public Bid save(Auction auction, Bid bid) {
         // this will throw exceptions if failures occur
-        bidRuleEngine.execute(auction, bid);
+        executeRules(auction, bid);
 
         if( !auction.getBidById(bid.getId()).isPresent() ){
             auction.addBid(bid);
@@ -80,5 +81,17 @@ public class BidServiceImpl implements BidService {
         }
 
         delete(auction, bid.get());
+    }
+
+    /**
+     * Execute the rule engine.
+     *
+     * @param auction
+     * @param bid
+     */
+    private void executeRules(Auction auction, Bid bid) {
+        Map<Object, Object> context = new HashMap<>();
+        context.put("auction", auction);
+        bidRuleEngine.execute(bid, context);
     }
 }

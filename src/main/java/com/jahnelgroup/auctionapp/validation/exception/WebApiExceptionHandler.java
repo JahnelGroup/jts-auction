@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception;
+package com.jahnelgroup.auctionapp.validation.exception;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.ConversionNotSupportedException;

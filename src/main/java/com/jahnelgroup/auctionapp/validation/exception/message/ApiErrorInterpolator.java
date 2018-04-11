@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.exception.message;
+package com.jahnelgroup.auctionapp.validation.exception.message;
 
 import org.springframework.validation.FieldError;
 

@@ -1,6 +1,6 @@
 package com.jahnelgroup.auctionapp.domain.user;
 
-import com.jahnelgroup.auctionapp.domain.user.Role.Role;
+import com.jahnelgroup.auctionapp.domain.user.role.Role;
 import lombok.Data;
 
 import javax.persistence.*;

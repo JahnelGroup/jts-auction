@@ -7,6 +7,7 @@ import com.jahnelgroup.auctionapp.domain.auction.bid.BidComparator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.SortComparator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,7 +36,8 @@ public class Auction extends AbstractEntity {
      */
     @JsonIgnore
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Bid> bids = new TreeSet<>(new BidComparator());
+    @SortComparator(BidComparator.class)
+    private SortedSet<Bid> bids = new TreeSet<>();
 
     /**
      * Get Bid by Bid Id.
@@ -54,7 +56,7 @@ public class Auction extends AbstractEntity {
      */
     public Optional<Bid> getHighestBid(){
         // they are sorted from highest to lowest
-        return bids.isEmpty() ? Optional.empty() : Optional.of(bids.iterator().next());
+        return bids.isEmpty() ? Optional.empty() : Optional.of(bids.first());
     }
 
     /**

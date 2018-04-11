@@ -9,6 +9,7 @@ public class BidComparator implements Comparator<Bid> {
 
     @Override
     public int compare(Bid b1, Bid b2) {
-        return Double.compare(b1.getAmount().doubleValue(), b2.getAmount().doubleValue());
+        // multiple by -1 to reverse order
+        return Double.compare(b1.getAmount().doubleValue(), b2.getAmount().doubleValue()) * -1;
     }
 }

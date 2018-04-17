@@ -83,9 +83,10 @@ public class AclSecuredAspect {
                 for(Permission p : ALL_PERMISSIONS){
                     acl.insertAce(acl.getEntries().size(), p, sid, true);
                 }
+
+                aclService.updateAcl(acl);
             }
 
-            aclService.updateAcl(acl);
             return null;
         });
 

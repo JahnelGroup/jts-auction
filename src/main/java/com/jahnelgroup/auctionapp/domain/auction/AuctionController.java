@@ -89,7 +89,8 @@ public class AuctionController {
      * @return
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasPermission(#before.get(), 'write')")
+    // has( #current.get().createdBy == principal.createdBy )
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#current.get(), 'write')")
     public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @RequestBody Auction incoming){
         if ( current.isPresent() ){
             return ResponseEntity.ok(auctionService.update(incoming, current.get()));

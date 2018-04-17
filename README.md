@@ -15,6 +15,7 @@ Learning is best accomplished through practice. This repo is the use-case we fol
 | 1-services     | Basic REST API and service implementations.               |
 | 2-security     | Added Spring Security and Users                           |
 | 3-validations  | Added validations                                         |
+| 4-permissions  | Added ACL and Object Permission                           |
 | 4-events       | Added events                                              |
 | X-ui           | Added basic UI                                            |
 | X-websockets   | Added real-time updates with websockets                   |

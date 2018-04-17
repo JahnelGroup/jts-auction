@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jahnelgroup.auctionapp.domain.AbstractEntity;
 import com.jahnelgroup.auctionapp.domain.auction.bid.Bid;
 import com.jahnelgroup.auctionapp.domain.auction.bid.BidComparator;
+import com.jahnelgroup.auctionapp.security.acl.AclSecured;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -17,6 +18,7 @@ import java.util.*;
  * Auction Aggregate Root.
  */
 @Entity
+@AclSecured
 @Data
 @ToString(exclude = "bids")
 @EqualsAndHashCode(exclude = "bids")

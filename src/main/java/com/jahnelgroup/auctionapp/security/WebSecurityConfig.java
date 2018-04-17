@@ -1,6 +1,8 @@
 package com.jahnelgroup.auctionapp.security;
 
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;
+import com.jahnelgroup.auctionapp.security.authentication.AuthUserDetailsService;
+import com.jahnelgroup.auctionapp.security.authentication.RestAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +32,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.signing-key}")

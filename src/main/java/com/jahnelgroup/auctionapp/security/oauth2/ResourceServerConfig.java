@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.security;
+package com.jahnelgroup.auctionapp.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/actuator/**", "/api-docs/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/actuator/**", "/api-docs/**", "/h2-console/**").permitAll()
+                .anyRequest().authenticated()
+                .and().headers().frameOptions().sameOrigin(); // otherwise h2 will just display a blank page;
     }
 }

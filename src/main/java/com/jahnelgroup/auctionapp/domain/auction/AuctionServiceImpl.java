@@ -1,7 +1,6 @@
 package com.jahnelgroup.auctionapp.domain.auction;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

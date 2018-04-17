@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.security;
+package com.jahnelgroup.auctionapp.security.authentication;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

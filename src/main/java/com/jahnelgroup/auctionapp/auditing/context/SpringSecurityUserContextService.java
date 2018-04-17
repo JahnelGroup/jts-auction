@@ -2,7 +2,7 @@ package com.jahnelgroup.auctionapp.auditing.context;
 
 import com.jahnelgroup.auctionapp.domain.user.User;
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;
-import com.jahnelgroup.auctionapp.security.UnauthenticaedException;
+import com.jahnelgroup.auctionapp.security.authentication.UnauthenticaedException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.context.SecurityContextHolder;

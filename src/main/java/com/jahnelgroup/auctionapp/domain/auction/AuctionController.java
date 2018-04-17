@@ -3,6 +3,7 @@ package com.jahnelgroup.auctionapp.domain.auction;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -101,6 +102,7 @@ public class AuctionController {
      * @return
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasPermission(#before.get(), 'read')")
     public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before){
         if( before.isPresent() ){
             auctionService.delete(before.get());

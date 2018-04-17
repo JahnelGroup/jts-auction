@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.security;
+package com.jahnelgroup.auctionapp.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

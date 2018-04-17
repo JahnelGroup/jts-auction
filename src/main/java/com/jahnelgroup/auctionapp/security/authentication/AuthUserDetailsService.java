@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.security;
+package com.jahnelgroup.auctionapp.security.authentication;
 
 import com.jahnelgroup.auctionapp.domain.user.User;
 import com.jahnelgroup.auctionapp.domain.user.UserRepository;

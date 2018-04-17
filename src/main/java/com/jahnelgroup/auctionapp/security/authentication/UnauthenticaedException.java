@@ -1,4 +1,4 @@
-package com.jahnelgroup.auctionapp.security;
+package com.jahnelgroup.auctionapp.security.authentication;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -27,6 +27,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 @AllArgsConstructor
@@ -73,6 +74,18 @@ public class WebApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiError> handleAll(Exception ex, WebRequest request){
         ApiError err = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "An error has occurred.");
         return new ResponseEntity(err, new HttpHeaders(), err.getStatus());
+    }
+
+    /**
+     * NoSuchElementException
+     *
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ApiError> handleNoSuchElementException(NoSuchElementException ex, WebRequest request) {
+        return wrap(request, new ResponseEntity("The item you requested could not be found.", new HttpHeaders(), HttpStatus.NOT_FOUND), ex, null);
     }
 
     /**

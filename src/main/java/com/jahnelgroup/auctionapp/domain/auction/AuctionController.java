@@ -80,11 +80,16 @@ public class AuctionController {
      *
      * PUT /auctions/1
      *
+     * [Security]
+     * Role  - ADMIN can do this for anyone.
+     * ACL   - If not an ADMIN then you must have the write privilege.
+     *
      * @param current
      * @param incoming
      * @return
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#before.get(), 'write')")
     public ResponseEntity<Auction> update(@PathVariable("id") Optional<Auction> current, @RequestBody Auction incoming){
         if ( current.isPresent() ){
             return ResponseEntity.ok(auctionService.update(incoming, current.get()));
@@ -98,11 +103,15 @@ public class AuctionController {
      *
      * DELETE /auctions/1
      *
+     * [Security]
+     * Role  - ADMIN can do this for anyone.
+     * ACL   - If not an ADMIN then you must have the write privilege.
+     *
      * @param before
      * @return
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasPermission(#before.get(), 'read')")
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#before.get(), 'delete')")
     public ResponseEntity deleteById(@PathVariable("id") Optional<Auction> before){
         if( before.isPresent() ){
             auctionService.delete(before.get());

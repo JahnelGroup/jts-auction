@@ -1,5 +1,6 @@
 package com.jahnelgroup.auctionapp.security.acl;
 
+import com.jahnelgroup.auctionapp.security.acl.permission.HierarchicalPermission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,8 +34,13 @@ public class AclContext {
     defaultMethodSecurityExpressionHandler() {
         DefaultMethodSecurityExpressionHandler expressionHandler
                 = new DefaultMethodSecurityExpressionHandler();
+
         AclPermissionEvaluator permissionEvaluator
                 = new AclPermissionEvaluator(aclService());
+
+        // TODO: Hierarchical doesn't seem possible, we need to explicitly give each permission.
+        //permissionEvaluator.setPermissionFactory(new DefaultPermissionFactory(HierarchicalPermission.class));
+
         expressionHandler.setPermissionEvaluator(permissionEvaluator);
         return expressionHandler;
     }

@@ -18,10 +18,14 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 /**
  * https://docs.spring.io/spring-security/site/docs/5.0.5.BUILD-SNAPSHOT/reference/htmlsingle/#domain-acls-getting-started
+ *
+ * This call will insert all base permissions for the creator of an Entity.
  */
 @Component
 @Aspect
@@ -33,17 +37,35 @@ public class AclSecuredAspect {
     private UserContextService userContextService;
     private PlatformTransactionManager transactionManager;
 
+    private final static List<Permission> ALL_PERMISSIONS = Arrays.asList(
+            BasePermission.READ,
+            BasePermission.WRITE,
+            BasePermission.CREATE,
+            BasePermission.DELETE,
+            BasePermission.ADMINISTRATION);
+
     @Pointcut("execution(* org.springframework.data.repository.CrudRepository.save(..))")
     public void save() {}
 
     @After("save() && args(entity)")
-    public void saveAcl(final JoinPoint pjp, AbstractEntity entity) {
-        log.info("saveAcl");
+    public void insertAllPermissions(final JoinPoint pjp, AbstractEntity entity) {
+        // Is this Entity meant to be secured by ACLs?
+        if(!entity.getClass().isAnnotationPresent(AclSecured.class)){
+            log.trace("ignoring entity={} not annotated with AclSecured", entity);
+            return;
+        }
+
+        // Do you own this Entity?
+        if( !userContextService.getCurrentUsername().equals(entity.getCreatedBy()) ){
+            log.trace("ignoring entity={} because it's not yours", entity);
+            return;
+        }
+
+        log.info("saving ACLs for user={} against entity={}", userContextService.getCurrentUsername(), entity);
 
         tx(entity, e -> {
             ObjectIdentity oi = new ObjectIdentityImpl(e.getClass(), e.getId());
             Sid sid = new PrincipalSid(userContextService.getCurrentUsername());
-            Permission p = BasePermission.ADMINISTRATION;
 
             // Create or update the relevant ACL
             MutableAcl acl = null;
@@ -53,8 +75,16 @@ public class AclSecuredAspect {
                 acl = aclService.createAcl(oi);
             }
 
+            // TODO: This does not work - is it even possible?
+            // Permission p = HierarchicalPermission.ADMIN;
+
             // Now grant some permissions via an access control entry (ACE)
-            acl.insertAce(acl.getEntries().size(), p, sid, true);
+            if( acl.getEntries() == null || acl.getEntries().size() == 0 ){
+                for(Permission p : ALL_PERMISSIONS){
+                    acl.insertAce(acl.getEntries().size(), p, sid, true);
+                }
+            }
+
             aclService.updateAcl(acl);
             return null;
         });

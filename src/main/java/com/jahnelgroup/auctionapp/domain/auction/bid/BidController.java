@@ -4,6 +4,7 @@ import com.jahnelgroup.auctionapp.domain.auction.Auction;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -86,12 +87,17 @@ public class BidController {
      *
      * PUT /auctions/{auctionId}/bids/1
      *
+     * [Security]
+     * Role  - ADMIN can do this for anyone.
+     * ACL   - If not an ADMIN then you must have the write privilege.
+     *
      * @param auction
      * @param current
      * @param incoming
      * @return
      */
     @PutMapping("/{bidId}")
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#current.get(), 'write')")
     public ResponseEntity<Bid> update(@PathVariable("auctionId") Optional<Auction> auction,
             @PathVariable("bidId") Optional<Bid> current, @RequestBody Bid incoming){
         if( auction.isPresent() && current.isPresent() ){
@@ -106,11 +112,16 @@ public class BidController {
      *
      * DELETE /auctions/{auctionId}/bids/1
      *
+     * [Security]
+     * Role  - ADMIN can do this for anyone.
+     * ACL   - If not an ADMIN then you must have the write privilege.
+     *
      * @param auction
      * @param bid
      * @return
      */
     @DeleteMapping("/{bidId}")
+    @PreAuthorize("hasRole('ADMIN') or hasPermission(#bid.get(), 'delete')")
     public ResponseEntity delete(@PathVariable("auctionId") Optional<Auction> auction, @PathVariable("bidId") Optional<Bid> bid){
         if( auction.isPresent() && bid.isPresent() ){
             bidService.delete(auction.get(), bid.get());

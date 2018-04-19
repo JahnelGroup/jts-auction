@@ -63,8 +63,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public void delete(Auction auction, Bid bid) {
-        auction.removeBid(bid);
-        auctionRepository.save(auction);
+        auctionRepository.save(auction.removeBid(bid));
     }
 
     @Override

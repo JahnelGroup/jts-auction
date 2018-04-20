@@ -35,7 +35,7 @@ public class SpringSecurityUserContextService implements UserContextService {
         }else{
             UserDetails userDetails = (UserDetails)p;
             Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
-            if( user.isPresent() ){
+            if( !user.isPresent() ){
                 throw new UsernameNotFoundException(userDetails.getUsername());
             }
             return user.get().getId();

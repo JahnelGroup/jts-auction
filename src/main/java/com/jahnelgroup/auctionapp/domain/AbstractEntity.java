@@ -11,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.lang.reflect.Array;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 
 @Data
 @MappedSuperclass

@@ -56,7 +56,7 @@ public class BidController {
     public ResponseEntity<Iterable<Bid>> findAll(@PathVariable("auctionId") Optional<Auction> auction){
         if( auction.isPresent() ){
             Set<Bid> bids = auction.get().getBids();
-            return bids.iterator().hasNext() ? new ResponseEntity<>(bids, HttpStatus.OK)
+            return !bids.isEmpty() ? new ResponseEntity<>(bids, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

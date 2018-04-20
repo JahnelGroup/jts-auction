@@ -75,7 +75,7 @@ public class BidController {
      */
     @GetMapping("/{bidId}")
     public ResponseEntity<Bid> findById(@PathVariable("auctionId") Optional<Auction> auction, @PathVariable("bidId") Optional<Bid> bid){
-        if( auction.isPresent() && bid.isPresent() ){
+        if( auction.isPresent() && bid.isPresent() && bid.get().isAssociated(auction.get()) ){
             return new ResponseEntity<>(bid.get(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,7 +100,7 @@ public class BidController {
     @PreAuthorize("hasRole('ADMIN') or hasPermission(#current.get(), 'write')")
     public ResponseEntity<Bid> update(@PathVariable("auctionId") Optional<Auction> auction,
             @PathVariable("bidId") Optional<Bid> current, @RequestBody Bid incoming){
-        if( auction.isPresent() && current.isPresent() ){
+        if( auction.isPresent() && current.isPresent() && current.get().isAssociated(auction.get()) ){
             return new ResponseEntity<>(bidService.update(auction.get(), incoming, current.get()), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -123,7 +123,7 @@ public class BidController {
     @DeleteMapping("/{bidId}")
     @PreAuthorize("hasRole('ADMIN') or hasPermission(#bid.get(), 'delete')")
     public ResponseEntity delete(@PathVariable("auctionId") Optional<Auction> auction, @PathVariable("bidId") Optional<Bid> bid){
-        if( auction.isPresent() && bid.isPresent() ){
+        if( auction.isPresent() && bid.isPresent() && bid.get().isAssociated(auction.get()) ){
             bidService.delete(auction.get(), bid.get());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{

@@ -6,6 +6,7 @@ import com.jahnelgroup.auctionapp.domain.auction.Auction;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,4 +29,17 @@ public class Bid extends AbstractEntity {
     @JsonIgnore
     @ManyToOne
     private Auction auction;
+
+    /**
+     * Determines if this Bid is associated to the supplied Auction by
+     * comparing primary ID's.
+     *
+     * @param auction
+     * @return
+     */
+    public boolean isAssociated(Auction auction){
+        if( this.auction == null || this.auction.getId() == null ||
+                auction == null || auction.getId() == null ) return false;
+        return this.auction.getId() == auction.getId();
+    }
 }

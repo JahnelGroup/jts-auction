@@ -39,4 +39,17 @@ public class Bid extends AbstractEntity implements Comparable<Bid> {
         double amount = bid.getAmount().doubleValue();
         return Double.compare(this.amount.doubleValue(), amount);
     }
+
+    /**
+     * Determines if this Bid is associated to the supplied Auction by
+     * comparing primary ID's.
+     *
+     * @param auction
+     * @return
+     */
+    public boolean isAssociated(Auction auction){
+        if( this.auction == null || this.auction.getId() == null ||
+                auction == null || auction.getId() == null ) return false;
+        return this.auction.getId() == auction.getId();
+    }
 }

@@ -28,9 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class AuctionIntegrationTests extends AbstractIntegrationTest {
 
-    @Autowired
-    AuctionService auctionService;
-
     @Value("classpath:/json/createAuction.json")
     Resource createAuction;
 

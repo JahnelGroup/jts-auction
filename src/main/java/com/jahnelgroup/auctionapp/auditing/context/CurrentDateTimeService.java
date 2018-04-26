@@ -2,7 +2,7 @@ package com.jahnelgroup.auctionapp.auditing.context;
 
 import java.time.ZonedDateTime;
 
-public class CurrentTimeDateTimeService implements DateTimeService{
+public class CurrentDateTimeService implements DateTimeService{
 
     @Override
     public ZonedDateTime getCurrentDateTime() {

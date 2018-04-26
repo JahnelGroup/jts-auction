@@ -1,6 +1,6 @@
 package com.jahnelgroup.auctionapp.auditing;
 
-import com.jahnelgroup.auctionapp.auditing.context.CurrentTimeDateTimeService;
+import com.jahnelgroup.auctionapp.auditing.context.CurrentDateTimeService;
 import com.jahnelgroup.auctionapp.auditing.context.DateTimeService;
 import com.jahnelgroup.auctionapp.auditing.context.SpringSecurityUserContextService;
 import com.jahnelgroup.auctionapp.auditing.context.UserContextService;
@@ -24,14 +24,28 @@ public class AuditConfig {
 
     @Bean
     DateTimeService dateTimeService(){
-        return new CurrentTimeDateTimeService();
+        return new CurrentDateTimeService();
     }
 
+
+
+
+    /**
+     * Register the DateTimeProvider for Spring Data.
+     *
+     * @param dateTimeService
+     * @return
+     */
     @Bean
     DateTimeProvider dateTimeProvider(DateTimeService dateTimeService){
         return () -> Optional.of(dateTimeService.getCurrentDateTime());
     }
 
+    /**
+     * Register the AuditAware for Spring Data.
+     * @param userContextService
+     * @return
+     */
     @Bean
     AuditorAware<String> userContextProvider(UserContextService userContextService){
         return () -> Optional.of(userContextService.getCurrentUsername());

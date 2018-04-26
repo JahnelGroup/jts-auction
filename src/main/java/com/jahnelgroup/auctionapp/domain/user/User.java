@@ -1,5 +1,6 @@
 package com.jahnelgroup.auctionapp.domain.user;
 
+import com.jahnelgroup.auctionapp.domain.AbstractEntity;
 import com.jahnelgroup.auctionapp.domain.user.Role.Role;
 import lombok.Data;
 
@@ -8,11 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractEntity {
 
     private String username;
 

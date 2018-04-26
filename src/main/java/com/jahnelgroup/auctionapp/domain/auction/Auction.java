@@ -21,10 +21,6 @@ import java.util.Optional;
 @EqualsAndHashCode(exclude = "bids")
 public class Auction extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String name;
 
     private String description;

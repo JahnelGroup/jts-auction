@@ -15,6 +15,7 @@ public @interface BidIncrement {
     String message() default "{BidIncrement.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
     double value() default 0.25D;
 
 }

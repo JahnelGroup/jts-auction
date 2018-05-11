@@ -11,7 +11,9 @@ import org.hibernate.annotations.SortComparator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Optional;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Auction Aggregate Root.

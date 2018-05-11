@@ -35,4 +35,3 @@ public abstract class SimpleRuleEngine<T> implements RuleEngine<T> {
     }
 
 }
-

@@ -18,7 +18,6 @@ public class BidOnceRule implements Rule<Bid> {
     @Override
     public void execute(Bid target, Map<Object, Object> context, Errors errors) {
         Auction auction = (Auction) context.get("auction");
-
         // A user can only bid once on an Auction.
         Optional<Bid> currentBid = auction.getBidByUsername(userContextService.getCurrentUsername());
         if( currentBid.isPresent() ){
